@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Profit Calculator</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        box-sizing: border-box; /* 컨테이너 크기 계산에 패딩과 테두리 포함 */
+      }
+      h1 {
+        color: #333;
+      }
+      .input-label {
+        display: block;
+        margin-bottom: 5px;
+      }
+      .input-field {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 10px;
+        box-sizing: border-box; /* 입력 칸 크기 계산에 패딩 포함 */
+      }
+      #calculateButton {
+        padding: 10px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        cursor: pointer;
+      }
+
+
+
+  </style>
+  <script>
+    // JavaScript 코드
+    function calculateAverage() {
+    var quantity1 = parseFloat(document.getElementById('quantity1').value);
+    var quantity2 = parseFloat(document.getElementById('quantity2').value);
+    var quantity3 = parseFloat(document.getElementById('quantity3').value);
+    var price1 = parseFloat(document.getElementById('price1').value);
+    var price2 = parseFloat(document.getElementById('price2').value);
+    var price3 = parseFloat(document.getElementById('price3').value);
+    var targetPrice = parseFloat(document.getElementById('targetPrice').value);
+    var stopLossPrice = parseFloat(document.getElementById('stopLossPrice').value);
+
+    var totalQuantity = quantity1 + quantity2 + quantity3;
+    var totalPrice = (quantity1 * price1) + (quantity2 * price2) + (quantity3 * price3);
+
+    // 3차 매수가 입력되지 않은 경우 0으로 처리
+    if (isNaN(quantity3)) {
+      quantity3 = 0;
+    }
+    if (isNaN(price3)) {
+      price3 = 0;
+    }
+
+    // 2차까지만 계산
+    totalQuantity = quantity1 + quantity2;
+    totalPrice = (quantity1 * price1) + (quantity2 * price2);
+
+    var averagePrice = totalPrice / totalQuantity;
+
+    if (isNaN(averagePrice)) {
+      document.getElementById('averagePrice').innerHTML = '평단가: 입력 오류';
+    } else {
+      var profitPercent = (targetPrice - averagePrice) / averagePrice * 100;
+      var lossPercent = (stopLossPrice - averagePrice) / averagePrice * 100;
+
+      document.getElementById('averagePrice').innerHTML = '평단가: ' + averagePrice.toFixed(2);
+      document.getElementById('profitPercent').innerHTML = '목표가 수익률: ' + profitPercent.toFixed(2) + '%';
+      document.getElementById('lossPercent').innerHTML = '손절가 수익률: ' + lossPercent.toFixed(2) + '%';
+    }
+  }
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>Profit Calculator</h1>
+    <label for="quantity1">비중 1:</label>
+    <input class="input-field" type="number" id="quantity1" placeholder="비중 1">
+    <label for="price1">매수가 1:</label>
+    <input class="input-field" type="number" id="price1" placeholder="매수가 1">
+
+    <label for="quantity2">비중 2:</label>
+    <input class="input-field" type="number" id="quantity2" placeholder="비중 2">
+    <label for="price2">매수가 2:</label>
+    <input class="input-field" type="number" id="price2" placeholder="매수가 2">
+
+    <label for="quantity3">비중 3:</label>
+    <input class="input-field" type="number" id="quantity3" placeholder="비중 3">
+    <label for="price3">매수가 3:</label>
+    <input class="input-field" type="number" id="price3" placeholder="매수가 3">
+
+    <label for="targetPrice">목표가:</label>
+    <input class="input-field" type="number" id="targetPrice" placeholder="목표가">
+
+    <label for="stopLossPrice">손절가:</label>
+    <input class="input-field" type="number" id="stopLossPrice" placeholder="손절가">
+
+    <button id="calculateButton" onclick="calculateAverage()">계산하기</button>
+
+    <div id="averagePrice"></div>
+    <div id="profitPercent"></div>
+    <div id="lossPercent"></div>
+  </div>
+</body>
+</html>
